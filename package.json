@@ -43,10 +43,10 @@
     "webpack-extension-reloader": "^1.1.4"
   },
   "license": "MIT",
-  "name": "Cypress Recorder by Neofonie",
+  "name": "cypress-recorder-by-neofonie",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Neofonie/cypress-chrome-recorder"
+    "url": "git+https://github.com/mubaidr/vue-chrome-extension-boilerplate.git"
   },
   "scripts": {
     "build": "npm run pack && npm run remove-evals && npm run zip",
