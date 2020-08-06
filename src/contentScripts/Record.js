@@ -6,6 +6,7 @@ export default class Record {
         this._clickedEl = null;
         this._hanlder = null;
         this._inspectedElement = null;
+        this.currentSpec = null;
     }
 
     init() {
@@ -17,8 +18,20 @@ export default class Record {
     /**
      * Just placeholder. Gets reengineered
      */
-    _getDefaultSpec() {
-        return "context('Created by Cypress Recorder', () => {beforeEach(function () {cy.viewport(1240, 600)})it('Generated IT', () => {VisitPage('') __CODE__})})";
+    _getSpec(codebloc = '', contextName = 'Created by Cypress Recorder', itName = 'Generated IT') {
+        return this.currentSpec ?? `/// <reference types="cypress" />
+                context('${contextName}', () => {
+                    beforeEach(function () {
+                        cy.viewport(1240, 600)
+                    })
+
+                    it('${itName}', () => {
+                        VisitPage('')
+
+                        ${codebloc}
+
+                    })
+                })`;
     }
 
     _listener() {
