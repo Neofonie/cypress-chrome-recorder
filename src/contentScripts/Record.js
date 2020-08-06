@@ -38,6 +38,10 @@ export default class Record {
         return this._currentSpec;
     }
 
+    _updateSpec(code) {
+        this._currentSpec = this._getSpec(code);
+    }
+
     _listener() {
         let _ref = this;
 

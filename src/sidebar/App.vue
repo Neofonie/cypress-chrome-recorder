@@ -1,49 +1,51 @@
 <template>
   <div class="root-container">
-      <div v-if="isStartView" class="start-container">
-        <startview></startview>
-        <button @click="showSpecView">{{ btnNewSpec }}</button>
-      </div>
-      <div v-if="isSpecView" class="spec-container">
-        <specview></specview>
-        <button @click="backToStart">{{ btnBackToStart }}</button>
-      </div>
+    <div v-if="isStartView" class="start-container">
+      <startview></startview>
+      <button @click="showSpecView">{{ btnNewSpec }}</button>
+    </div>
+    <div v-if="isSpecView" class="spec-container">
+      <button @click="backToStart">{{ btnBackToStart }}</button>
+      <specview></specview>
+    </div>
   </div>
 </template>
 
 <script>
-import startview from './components/startview/startview.vue';
-import specview from './components/specview/specview.vue';
+import startview from './components/startview/startview.vue'
+import specview from './components/specview/specview.vue'
+
+import statics from '../helper/statics'
 
 export default {
   data() {
     return {
       btnNewSpec: 'Start new record!',
       btnBackToStart: 'Get back to Start!',
-      isStartView : true,
-      isSpecView : false
+      isStartView: true,
+      isSpecView: false,
     }
   },
   components: {
     startview: startview,
-    specview: specview
+    specview: specview,
   },
   methods: {
     backToStart: function () {
-      this.isStartView = true;
-      this.isSpecView = false;
+      this.isStartView = true
+      this.isSpecView = false
     },
     showSpecView: function () {
-      this.isStartView = false;
-      this.isSpecView = true;
-    }
-  }
+      this.isStartView = false
+      this.isSpecView = true
+    },
+  },
 }
 </script>
 
 <style>
-  .start-container,
-  .spec-container {
-    text-align: center;
-  }
+.start-container,
+.spec-container {
+  text-align: center;
+}
 </style>
