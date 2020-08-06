@@ -1,14 +1,15 @@
 <template>
-  <div class="wellcome-content">
-    <div>
-      {{ wellcome }}<br>
-      <img class="neo-logo" :src="neoLogo" /><br>
-      <img class="cy-logo" :src="cyLogo" />
-      {{ recorder }}<br>
-    </div>
-    <button @click="selectedComponent = 'setNewRecord'">{{ btnStart }}</button>
-    <component :is="selectedComponent">
-    </component>
+  <div class="root-container">
+      <div v-if="isStartView" class="start-container">
+          {{ wellcome }}<br>
+          <img class="neo-logo" :src="neoLogo" /><br>
+          <img class="cy-logo" :src="cyLogo" />
+          {{ recorder }}<br>
+        <button @click="showSpecView">{{ btnStart }}</button>
+      </div>
+      <div v-if="isSpecView" class="spec-container">
+        <h1> fresh new spec!</h1>
+      </div>
   </div>
 </template>
 
@@ -26,12 +27,20 @@ export default {
       cyLogo: cyLogo,
       recorder: 'recorder!',
       btnStart: 'Start new record!',
-      selectedComponent: allRecordsList
+      selectedComponent: allRecordsList,
+      isStartView : true,
+      isSpecView : false
     }
   },
   components: {
     setNewRecord: setNewRecord,
     allRecordsList: allRecordsList
+  },
+  methods: {
+    showSpecView: function () {
+      this.isStartView = false;
+      this.isSpecView = true;
+    }
   }
 }
 </script>
