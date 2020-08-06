@@ -1,14 +1,20 @@
 export default {
-    States: {
-        Sidebar: {
+    STATES: {
+        SIDEBAR: {
             OPEN: 'OPEN',
             CLOSED: 'CLOSED'
         }
     },
-    Actions: {
+    ACTIONS: {
         SIDEBAR_TOGGLE: 'SIDEBAR_TOGGLE',
+        DOWNLOAD_SPEC: 'DOWNLOAD_SPEC',
+
         CTX: {
-            INSPECT: 'INSPECT'
+            ROOT_ID: 'NEO_CYPRESS_CTX',
+            OPTIONS: {
+                ADD_TO_RECORD: 'ADD_TO_RECORD',
+                DOWNLOAD_SPEC: 'DOWNLOAD_SPEC'
+            }
         }
     }
 }

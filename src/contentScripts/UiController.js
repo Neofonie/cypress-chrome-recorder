@@ -4,7 +4,6 @@ export default class UiController {
     constructor() {
         console.log("UiController init");
         let _iframe = document.createElement('iframe');
-        _iframe.style.background = "green";
         _iframe.style.height = "100%";
         _iframe.style.width = "0px";
         _iframe.style.position = "fixed";
@@ -16,7 +15,7 @@ export default class UiController {
         _iframe.src = chrome.runtime.getURL("sidebar.html");
 
         this._iframe = _iframe;
-        this._sidebarState = statics.States.Sidebar.CLOSED;
+        this._sidebarState = statics.STATES.SIDEBAR.CLOSED;
         this._inspectedElement = null;
     }
 
@@ -33,13 +32,11 @@ export default class UiController {
         }, true);
 
         chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-            console.dir(msg);
-
             switch (msg.action) {
-                case statics.Actions.SIDEBAR_TOGGLE:
+                case statics.ACTIONS.SIDEBAR_TOGGLE:
                     _ref._toggleSidebar();
                     break
-                case statics.Actions.CTX.INSPECT:
+                case statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD:
                     console.dir(_ref._inspectedElement);
                     break
             }
@@ -47,12 +44,12 @@ export default class UiController {
     }
 
     _toggleSidebar() {
-        if (this._sidebarState === statics.States.Sidebar.CLOSED) {
+        if (this._sidebarState === statics.STATES.SIDEBAR.CLOSED) {
             this._iframe.style.width = "400px";
-            this._sidebarState = statics.States.Sidebar.OPEN;
+            this._sidebarState = statics.STATES.SIDEBAR.OPEN;
         } else {
             this._iframe.style.width = "0px";
-            this._sidebarState = statics.States.Sidebar.CLOSED;
+            this._sidebarState = statics.STATES.SIDEBAR.CLOSED;
         }
     }
 }

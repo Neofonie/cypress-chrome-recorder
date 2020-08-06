@@ -3,7 +3,6 @@ import statics from '../helper/statics'
 class RecordsManager {
     constructor() {
         console.log("RecordsManager construct");
-        this._ctxMenuId = 'neoCypressCtx';
     }
 
     init() {
@@ -11,7 +10,7 @@ class RecordsManager {
 
         chrome.browserAction.onClicked.addListener(function (tab) {
             chrome.tabs.sendMessage(tab.id, {
-                action: statics.Actions.SIDEBAR_TOGGLE,
+                action: statics.ACTIONS.SIDEBAR_TOGGLE,
                 tab: tab
             });
         });
@@ -25,14 +24,24 @@ class RecordsManager {
         console.log("RecordsManager _createContextMenu");
         chrome.contextMenus.removeAll();
         chrome.contextMenus.create({
-            id: this._ctxMenuId,
+            id: statics.ACTIONS.CTX.ROOT_ID,
             title: 'Cypress Recorder',
             contexts: ['all'],
         });
 
-        // for (const [key, value] of Object.entries(this._ctnMenuOptions)) {
-        //     console.log(`${key}: ${value}`);
-        // }
+        chrome.contextMenus.create({
+            id: statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD,
+            title: 'Add to record',
+            parentId: statics.ACTIONS.CTX.ROOT_ID,
+            contexts: ['all']
+        })
+
+        chrome.contextMenus.create({
+            id: statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC,
+            title: 'Download dummy Spec',
+            parentId: statics.ACTIONS.CTX.ROOT_ID,
+            contexts: ['all']
+        })
 
         this._handler = this._contextHandler.bind(this);
         chrome.contextMenus.onClicked.addListener(this._handler);
@@ -42,19 +51,32 @@ class RecordsManager {
         console.dir(info);
         if (info.menuItemId !== undefined) {
             switch (info.menuItemId) {
-                case (this._ctxMenuId):
-                    console.log("ctx in option");
+                case (statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD):
+                    console.log("ctx in option add to record");
                     // call select element handler
                     this._handleSelectElement();
+                    break
+                case (statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC):
+                    console.log("ctx in option download");
+                    this._handleDownloadSpec();
                     break
             }
         }
     }
 
+    _handleDownloadSpec() {
+        let _ref = this;
+        console.log("ctx in _handleDownloadSpec");
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { action: statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC });
+        });
+    }
+
     _handleSelectElement() {
+        let _ref = this;
         console.log("ctx in _handleSelectElement");
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: statics.Actions.CTX.INSPECT } );
+            chrome.tabs.sendMessage(tabs[0].id, { action: statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD });
         });
     }
 }
