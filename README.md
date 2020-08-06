@@ -1,1 +1,1 @@
-# cypress-chrome-recorder
+# cypress-chrome-recorder by Steven und Serkan
