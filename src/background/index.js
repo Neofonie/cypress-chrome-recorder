@@ -4,15 +4,18 @@ class RecordsManager {
     constructor() {
         console.log("RecordsManager construct");
         this._ctxMenuId = 'neoCypressCtx';
-        // this._ctnMenuOptions = {
-        //     SELECT_ELEMENT: 'SELECT_ELEMENT'
-        // }
-        this._sidebarState = statics.States.Sidebar.CLOSED;
-        this._hanlder = null;
     }
 
     init() {
         console.log("RecordsManager init");
+
+        chrome.browserAction.onClicked.addListener(function (tab) {
+            chrome.tabs.sendMessage(tab.id, {
+                action: statics.Actions.SIDEBAR_TOGGLE,
+                tab: tab
+            });
+        });
+
         this._createContextMenu();
     }
 
@@ -23,7 +26,7 @@ class RecordsManager {
         chrome.contextMenus.removeAll();
         chrome.contextMenus.create({
             id: this._ctxMenuId,
-            title: 'STM Context',
+            title: 'Cypress Recorder',
             contexts: ['all'],
         });
 
@@ -33,37 +36,26 @@ class RecordsManager {
 
         this._handler = this._contextHandler.bind(this);
         chrome.contextMenus.onClicked.addListener(this._handler);
-        chrome.browserAction.onClicked.addListener(function (tab) {
-            _ref._toggleSidebar(tab, _ref._sidebarState === statics.States.Sidebar.CLOSED);
-        });
     }
 
     _contextHandler(info, tab) {
+        console.dir(info);
         if (info.menuItemId !== undefined) {
             switch (info.menuItemId) {
                 case (this._ctxMenuId):
+                    console.log("ctx in option");
                     // call select element handler
-                    this._toggleSidebar(tab);
+                    this._handleSelectElement();
                     break
             }
         }
     }
 
     _handleSelectElement() {
+        console.log("ctx in _handleSelectElement");
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello", infoPara: info }, function (response) {
-                this._toggleSidebar(tabs[0]);
-                elt.value = response.value;
-            });
+            chrome.tabs.sendMessage(tabs[0].id, { action: statics.Actions.CTX.INSPECT } );
         });
-    }
-
-    _toggleSidebar(tab, shouldBeOpen = true) {
-        if ((shouldBeOpen && (this._sidebarState === statics.States.Sidebar.CLOSED)) ||
-            (!shouldBeOpen && (this._sidebarState === statics.States.Sidebar.OPEN))) {
-            this._sidebarState = shouldBeOpen ? statics.States.Sidebar.OPEN : statics.States.Sidebar.CLOSED;
-            chrome.tabs.sendMessage(tab.id, statics.Actions.SIDEBAR_TOGGLE);
-        }
     }
 }
 
