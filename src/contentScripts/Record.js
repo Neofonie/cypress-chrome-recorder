@@ -19,7 +19,7 @@ export default class Record {
         this._clickedEl = null;
 
         document.addEventListener("contextmenu", function (event) {
-            this._clickedEl = event.target;
+            _ref._clickedEl = event.target;
         }, true);
 
 
@@ -27,10 +27,10 @@ export default class Record {
             console.dir(request);
             console.dir(sender);
             console.dir(sendResponse);
-            console.dir(this._clickedEl);
+            console.dir(_ref._clickedEl);
 
             if (request.greeting == "hello") {
-                sendResponse({ value: this._clickedEl.value });
+                sendResponse({ value: _ref._clickedEl.value });
             }
         });
 
@@ -44,7 +44,7 @@ export default class Record {
         this._iframe.style.zIndex = "9000000000000000000";
         this._iframe.style["boxShadow"] = "rgb(0 0 0 / 59%) -2px 0px 10px 4px";
         this._iframe.frameBorder = "none";
-        this._iframe.src = chrome.extension.getURL("popup.html")
+        this._iframe.src = chrome.extension.getURL("sidebar.html")
 
         document.body.appendChild(this._iframe);
     }

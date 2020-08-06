@@ -7,7 +7,7 @@
     {
       "all_frames": false,
       "js": ["./contentScripts.js"],
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["*://*/*"],
       "run_at": "document_end"
     }
   ],
@@ -25,12 +25,7 @@
     "page": "./options.html"
   },
   "permissions": [
-    "http://*/*",
-    "https://*/*",
-    "background",
     "storage",
-    "tabs",
-    "webRequest",
     "webNavigation",
     "activeTab",
     "contextMenus"
