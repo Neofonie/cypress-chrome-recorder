@@ -1,14 +1,14 @@
 {
   "author": {
-    "email": "mubaidr@gmail.com",
-    "name": "Muhammad Ubaid Raza",
-    "url": "https://mubaidr.github.io/"
+    "email": "steven.matz@neofonie.de | serkan.savasal@neofonie.de",
+    "name": "Steven Matz & Serkan Savasal",
+    "url": "https://github.com/Neofonie/cypress-chrome-recorder"
   },
   "dependencies": {
     "bulma-fluent": "^0.3.25",
     "vue": "^2.6.11"
   },
-  "description": "vue-chrome-extension-boilerplate",
+  "description": "A cypress recorder for chrome",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
@@ -56,5 +56,5 @@
     "remove-evals": "node scripts/remove-evals.js",
     "zip": "node scripts/build-zip.js"
   },
-  "version": "1.0.0"
+  "version": "0.0.1"
 }
