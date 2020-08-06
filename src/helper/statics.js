@@ -15,6 +15,9 @@ export default {
                 ADD_TO_RECORD: 'ADD_TO_RECORD',
                 DOWNLOAD_SPEC: 'DOWNLOAD_SPEC'
             }
+        },
+        SPEC: {
+            GET_CURRENT: 'GET_CURRENT'
         }
     }
 }
