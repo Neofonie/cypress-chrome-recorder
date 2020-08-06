@@ -17,7 +17,7 @@ function configFunc(env, argv) {
     context: path.resolve(__dirname, './src'),
     entry: {
       options: './options/index.js',
-      popup: './popup/index.js',
+      sidebar: './sidebar/index.js',
       background: './background/index.js',
       contentScripts: './contentScripts/index.js',
     },
@@ -110,10 +110,10 @@ function configFunc(env, argv) {
         chunks: ['options'],
       }),
       new HtmlWebpackPlugin({
-        title: 'Popup',
+        title: 'Sidebar',
         template: './index.html',
-        filename: 'popup.html',
-        chunks: ['popup'],
+        filename: 'sidebar.html',
+        chunks: ['sidebar'],
       }),
     ],
   }
