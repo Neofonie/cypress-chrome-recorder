@@ -1,42 +1,38 @@
 <template>
   <div class="root-container">
       <div v-if="isStartView" class="start-container">
-          {{ wellcome }}<br>
-          <img class="neo-logo" :src="neoLogo" /><br>
-          <img class="cy-logo" :src="cyLogo" />
-          {{ recorder }}<br>
-        <button @click="showSpecView">{{ btnStart }}</button>
+        <startview></startview>
+        <button @click="showSpecView">{{ btnNewSpec }}</button>
       </div>
       <div v-if="isSpecView" class="spec-container">
-        <h1> fresh new spec!</h1>
+        <specview></specview>
+        <button @click="backToStart">{{ btnBackToStart }}</button>
       </div>
   </div>
 </template>
 
 <script>
-import neoLogo from '../assets/logos/neo-logo.png';
-import cyLogo from '../assets/logos/cypress-logo.png';
-import setNewRecord from '../records/newRecord.vue';
-import allRecordsList from '../records/recordsList.vue';
+import startview from './components/startview/startview.vue';
+import specview from './components/specview/specview.vue';
 
 export default {
   data() {
     return {
-      wellcome: 'Welcome to the',
-      neoLogo: neoLogo,
-      cyLogo: cyLogo,
-      recorder: 'recorder!',
-      btnStart: 'Start new record!',
-      selectedComponent: allRecordsList,
+      btnNewSpec: 'Start new record!',
+      btnBackToStart: 'Get back to Start!',
       isStartView : true,
       isSpecView : false
     }
   },
   components: {
-    setNewRecord: setNewRecord,
-    allRecordsList: allRecordsList
+    startview: startview,
+    specview: specview
   },
   methods: {
+    backToStart: function () {
+      this.isStartView = true;
+      this.isSpecView = false;
+    },
     showSpecView: function () {
       this.isStartView = false;
       this.isSpecView = true;
@@ -46,19 +42,8 @@ export default {
 </script>
 
 <style>
-  .wellcome-content {
+  .start-container,
+  .spec-container {
     text-align: center;
-  }
-
-  .neo-logo {
-    background: red;
-    padding: 2px;
-    margin-top: 10px;
-    height: 30px;
-  }
-
-  .cy-logo {
-    margin-top: 10px;
-    height: 30px;
   }
 </style>
