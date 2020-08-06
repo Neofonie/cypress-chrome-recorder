@@ -3,16 +3,18 @@ import statics from '../helper/statics'
 class RecordsManager {
     constructor() {
         console.log("RecordsManager construct");
-        this._ctxMenuId = 'neoCypressCtx';
-        // this._ctnMenuOptions = {
-        //     SELECT_ELEMENT: 'SELECT_ELEMENT'
-        // }
-        this._sidebarState = statics.States.Sidebar.CLOSED;
-        this._hanlder = null;
     }
 
     init() {
         console.log("RecordsManager init");
+
+        chrome.browserAction.onClicked.addListener(function (tab) {
+            chrome.tabs.sendMessage(tab.id, {
+                action: statics.ACTIONS.SIDEBAR_TOGGLE,
+                tab: tab
+            });
+        });
+
         this._createContextMenu();
     }
 
@@ -22,48 +24,60 @@ class RecordsManager {
         console.log("RecordsManager _createContextMenu");
         chrome.contextMenus.removeAll();
         chrome.contextMenus.create({
-            id: this._ctxMenuId,
-            title: 'STM Context',
+            id: statics.ACTIONS.CTX.ROOT_ID,
+            title: 'Cypress Recorder',
             contexts: ['all'],
         });
 
-        // for (const [key, value] of Object.entries(this._ctnMenuOptions)) {
-        //     console.log(`${key}: ${value}`);
-        // }
+        chrome.contextMenus.create({
+            id: statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD,
+            title: 'Add to record',
+            parentId: statics.ACTIONS.CTX.ROOT_ID,
+            contexts: ['all']
+        })
+
+        chrome.contextMenus.create({
+            id: statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC,
+            title: 'Download dummy Spec',
+            parentId: statics.ACTIONS.CTX.ROOT_ID,
+            contexts: ['all']
+        })
 
         this._handler = this._contextHandler.bind(this);
         chrome.contextMenus.onClicked.addListener(this._handler);
-        chrome.browserAction.onClicked.addListener(function (tab) {
-            _ref._toggleSidebar(tab, _ref._sidebarState === statics.States.Sidebar.CLOSED);
-        });
     }
 
     _contextHandler(info, tab) {
+        console.dir(info);
         if (info.menuItemId !== undefined) {
             switch (info.menuItemId) {
-                case (this._ctxMenuId):
+                case (statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD):
+                    console.log("ctx in option add to record");
                     // call select element handler
-                    this._toggleSidebar(tab);
+                    this._handleSelectElement();
+                    break
+                case (statics.ACTIONS.CTX.ROOT_ID + statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC):
+                    console.log("ctx in option download");
+                    this._handleDownloadSpec();
                     break
             }
         }
     }
 
-    _handleSelectElement() {
+    _handleDownloadSpec() {
+        let _ref = this;
+        console.log("ctx in _handleDownloadSpec");
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello", infoPara: info }, function (response) {
-                this._toggleSidebar(tabs[0]);
-                elt.value = response.value;
-            });
+            chrome.tabs.sendMessage(tabs[0].id, { action: statics.ACTIONS.CTX.OPTIONS.DOWNLOAD_SPEC });
         });
     }
 
-    _toggleSidebar(tab, shouldBeOpen = true) {
-        if ((shouldBeOpen && (this._sidebarState === statics.States.Sidebar.CLOSED)) ||
-            (!shouldBeOpen && (this._sidebarState === statics.States.Sidebar.OPEN))) {
-            this._sidebarState = shouldBeOpen ? statics.States.Sidebar.OPEN : statics.States.Sidebar.CLOSED;
-            chrome.tabs.sendMessage(tab.id, statics.Actions.SIDEBAR_TOGGLE);
-        }
+    _handleSelectElement() {
+        let _ref = this;
+        console.log("ctx in _handleSelectElement");
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { action: statics.ACTIONS.CTX.OPTIONS.ADD_TO_RECORD });
+        });
     }
 }
 

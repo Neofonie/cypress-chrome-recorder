@@ -60,3 +60,5 @@ typings/
 dist/
 dist/*
 dist-zip/
+node_modules/
+node_modules/*
