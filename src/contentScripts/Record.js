@@ -6,7 +6,7 @@ export default class Record {
         this._clickedEl = null;
         this._hanlder = null;
         this._inspectedElement = null;
-        this.currentSpec = null;
+        this._currentSpec = null;
     }
 
     init() {
@@ -19,19 +19,23 @@ export default class Record {
      * Just placeholder. Gets reengineered
      */
     _getSpec(codeblock = '', contextName = 'Created by Cypress Recorder', itName = 'Generated IT') {
-        return this.currentSpec ?? `/// <reference types="cypress" />
-                context('${contextName}', () => {
-                    beforeEach(function () {
-                        cy.viewport(1240, 600)
-                    })
+        if (this._currentSpec === null) {
+            this._currentSpec = `/// <reference types="cypress" />
+            context('${contextName}', () => {
+                beforeEach(function () {
+                    cy.viewport(1240, 600)
+                })
 
-                    it('${itName}', () => {
-                        VisitPage('')
+                it('${itName}', () => {
+                    VisitPage('')
 
-                        ${codeblock}
+                    ${codeblock}
 
-                    })
-                })`;
+                })
+            })`;
+        }
+
+        return this._currentSpec;
     }
 
     _listener() {
@@ -47,7 +51,10 @@ export default class Record {
                     console.dir('Record received: ' + _ref._inspectedElement);
                     break
                 case statics.ACTIONS.DOWNLOAD_SPEC:
-                    _ref._downloadSpec('DUMMY.spec.js', _ref._getDefaultSpec());
+                    _ref._downloadSpec('DUMMY.spec.js', _ref._getSpec());
+                    break
+                case statics.ACTIONS.SPEC.GET_CURRENT:
+                    sendResponse({ value: _ref._getSpec() });
                     break
             }
         })
