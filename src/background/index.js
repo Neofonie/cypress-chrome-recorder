@@ -34,13 +34,11 @@ class RecordsManager {
         this._handler = this._contextHandler.bind(this);
         chrome.contextMenus.onClicked.addListener(this._handler);
         chrome.browserAction.onClicked.addListener(function (tab) {
-            _ref._toggleSidebar(tab, !(_ref._sidebarState === statics.States.Sidebar.CLOSED));
+            _ref._toggleSidebar(tab, _ref._sidebarState === statics.States.Sidebar.CLOSED);
         });
     }
 
     _contextHandler(info, tab) {
-        alert("RecordsManager _contextHandler");
-
         if (info.menuItemId !== undefined) {
             switch (info.menuItemId) {
                 case (this._ctxMenuId):
@@ -52,8 +50,6 @@ class RecordsManager {
     }
 
     _handleSelectElement() {
-        alert("RecordsManager _handleSelectElement");
-
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello", infoPara: info }, function (response) {
                 this._toggleSidebar(tabs[0]);
@@ -63,9 +59,8 @@ class RecordsManager {
     }
 
     _toggleSidebar(tab, shouldBeOpen = true) {
-        alert('RecordsManager _toggleSidebar: ' + this._sidebarState + ' vs ' + shouldBeOpen);
-
-        if ((this._sidebarState === statics.States.Sidebar.CLOSED) != shouldBeOpen) {
+        if ((shouldBeOpen && (this._sidebarState === statics.States.Sidebar.CLOSED)) ||
+            (!shouldBeOpen && (this._sidebarState === statics.States.Sidebar.OPEN))) {
             this._sidebarState = shouldBeOpen ? statics.States.Sidebar.OPEN : statics.States.Sidebar.CLOSED;
             chrome.tabs.sendMessage(tab.id, statics.Actions.SIDEBAR_TOGGLE);
         }

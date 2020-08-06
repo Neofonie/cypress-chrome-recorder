@@ -11,9 +11,7 @@ export default class Record {
         let _ref = this;
 
         chrome.runtime.onMessage.addListener(function (msg, sender) {
-            alert('conten listener');
             if (msg == statics.Actions.SIDEBAR_TOGGLE) {
-                alert('conten listener: ' + msg);
                 _ref._sidebarToddle();
             }
         })
