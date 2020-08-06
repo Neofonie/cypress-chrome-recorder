@@ -44,7 +44,7 @@ export default class Record {
         this._iframe.style.zIndex = "9000000000000000000";
         this._iframe.style["boxShadow"] = "rgb(0 0 0 / 59%) -2px 0px 10px 4px";
         this._iframe.frameBorder = "none";
-        this._iframe.src = chrome.extension.getURL("sidebar.html")
+        this._iframe.src = chrome.runtime.getURL("sidebar.html")
 
         document.body.appendChild(this._iframe);
     }
