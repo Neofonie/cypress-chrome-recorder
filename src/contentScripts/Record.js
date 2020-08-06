@@ -18,7 +18,7 @@ export default class Record {
     /**
      * Just placeholder. Gets reengineered
      */
-    _getSpec(codebloc = '', contextName = 'Created by Cypress Recorder', itName = 'Generated IT') {
+    _getSpec(codeblock = '', contextName = 'Created by Cypress Recorder', itName = 'Generated IT') {
         return this.currentSpec ?? `/// <reference types="cypress" />
                 context('${contextName}', () => {
                     beforeEach(function () {
@@ -28,7 +28,7 @@ export default class Record {
                     it('${itName}', () => {
                         VisitPage('')
 
-                        ${codebloc}
+                        ${codeblock}
 
                     })
                 })`;
